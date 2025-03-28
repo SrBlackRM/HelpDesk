@@ -4,7 +4,7 @@ use std::sync::Arc;
 // axum imports
 use axum::{
     response::{Html, IntoResponse}, 
-    routing::{get, post},
+    routing::get,
     extract::State,
     Router
 };
@@ -20,6 +20,7 @@ use models::appstate::AppState;
 
 // modulos proprios imports
 mod controllers;
+mod routes;
 mod models;
 mod db;
 
@@ -42,7 +43,8 @@ async fn main() {
     .route("/", get(render_index))
 
     // cria rota para registro de novo usuário / cliente
-    .route("/register", post(controllers::user_controller::create_user))
+    .nest("/register", routes::register::RegisterRoute::create_register_route(state.clone()))
+    
     .with_state(state)
     ;
     
@@ -61,3 +63,4 @@ async fn render_index(State(state): State<Arc<AppState>>) -> impl IntoResponse{
         .expect("Erro ao carregar index.html");
     Html(rendered)
 }
+
