@@ -2,9 +2,12 @@ use axum::{
     Json, 
     extract::State
 };
+
 use std::sync::Arc;
-use sqlx::query;
-use crate::models::{appstate::AppState, user::User};
+
+use crate::models::{
+    appstate::AppState, 
+    user::User};
 
 // criar novo usuário e inserir no banco
 pub async fn create_user(
@@ -18,17 +21,8 @@ pub async fn create_user(
         payload.user_password,
     );
 
-    // Inserir no banco com a query corrigida
-    query(
-        "INSERT INTO Users (User_Name, User_Email, User_Password, User_Role) VALUES (?, ?, ?, ?)"
-    )
-    .bind(&new_user.user_name)
-    .bind(&new_user.user_email)
-    .bind(&new_user.user_password)
-    .bind(format!("{:?}", new_user.user_role)) // Converte enum para string
-    .execute(&state.pool)
-    .await
-    .expect("Erro ao inserir usuário");
+    // utiliza a implementação save user para salvar no banco
+    User::save_user_in_db(&new_user, state).await;
 
     Json(new_user)
 }
