@@ -40,10 +40,10 @@ CREATE TABLE Tickets (
     PRIMARY KEY (ID_Ticket),
     
     CONSTRAINT FK_UserTechnical FOREIGN KEY (ID_User_Technical)
-    REFERENCES Users(ID_User),
+    REFERENCES Users(ID_User) ON DELETE CASCADE,
     
     CONSTRAINT FK_UserRequesting FOREIGN KEY (ID_User_Requesting)
-    REFERENCES Users(ID_User)
+    REFERENCES Users(ID_User) ON DELETE CASCADE
 );
 
 CREATE TABLE Interactions (
@@ -64,4 +64,4 @@ CREATE TABLE Interactions (
     REFERENCES Users(ID_User) ON DELETE CASCADE
 );
 
-ALTER TABLE Users ADD User_Active BOOL NOT NULL DEFAULT FALSE;
+#ALTER TABLE Users ADD User_Active BOOL NOT NULL DEFAULT FALSE;
