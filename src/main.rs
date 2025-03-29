@@ -59,6 +59,7 @@ async fn main() {
 
 // cria função que renderiza index
 async fn render_index(State(state): State<Arc<AppState>>) -> impl IntoResponse{
+    println!("GET /index.html");
     let rendered = state.tera.render("index.html", &tera::Context::new())
         .expect("Erro ao carregar index.html");
     Html(rendered)

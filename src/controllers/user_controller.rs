@@ -14,6 +14,7 @@ pub async fn create_user(
     State(state): State<Arc<AppState>>,
     Json(payload): Json<User>
 ) -> Json<User> {
+    println!("POST /register.html");
     // utiliza a implementação build_user para criar novo usuário
     let new_user = User::build_user(
         payload.user_name,

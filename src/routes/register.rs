@@ -26,6 +26,7 @@ impl RegisterRoute {
 
 // renderiza a pagina de registro metodo GET
 pub async fn render_register(State(state): State<Arc<AppState>>) -> impl IntoResponse{
+    println!("GET /register.html");
     let rendered = state.tera.render("register.html", &tera::Context::new())
         .expect("Erro ao carregar register.html");
     Html(rendered)
