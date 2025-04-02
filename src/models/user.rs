@@ -1,11 +1,14 @@
 use serde::{Deserialize, Serialize};
+// use sqlx::Row;
 use sqlx::Type;
 use sqlx::query;
+// use crate::db::connection::establish_connection;
 use crate::models::appstate::AppState;
 use std::sync::Arc;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
+    pub user_id: Option<i32>,
     pub user_name: String,
     pub user_email: String,
     pub user_password: String,
@@ -27,6 +30,7 @@ pub enum UserRole {
 impl User {
     pub fn build_user(name: String, email: String, password: String) -> Self {
         Self {
+            user_id: None,
             user_name: name,
             user_email: email,
             user_password: password,
@@ -51,4 +55,20 @@ impl User {
         .await
         .expect("Erro ao inserir usuário");
     }
+
+
+    // NOT USING THIS YET
+    // pub async fn get_id_by_email(email: String) ->  Option<i32>{
+    //     let sql = "SELECT ID_User FROM Users WHERE User_Email = ?";
+
+    //     let pool = establish_connection().await.ok()?;
+        
+    //     match query(sql)
+    //     .bind(email)
+    //     .fetch_one(&pool)
+    //     .await {
+    //         Ok(row) => row.try_get(0).ok(),
+    //         Err(_) => None
+    //     }
+    // }
 }

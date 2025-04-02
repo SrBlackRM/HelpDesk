@@ -45,6 +45,9 @@ async fn main() {
 
     // cria rota para registro de novo usuário / cliente
     .nest("/register", routes::register::RegisterRoute::create_register_route(state.clone()))
+
+    // abrir chamado
+    .nest("/new_ticket", routes::ticket::TicketRoute::create_new_ticket_route(state.clone()))
     
     .with_state(state)
     ;
@@ -60,7 +63,7 @@ async fn main() {
 
 // cria função que renderiza index
 async fn render_index(State(state): State<Arc<AppState>>) -> impl IntoResponse{
-    println!("GET /index.html");
+    println!("GET /index");
     let rendered = state.tera.render("index.html", &tera::Context::new())
         .expect("Erro ao carregar index.html");
     Html(rendered)

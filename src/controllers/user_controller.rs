@@ -1,16 +1,9 @@
-use axum::response::IntoResponse;
-use axum::{
-    Form, 
-    extract::State
-};
-
 use std::sync::Arc;
 
-use crate::models::{
-    appstate::AppState, 
-    user::User};
+use axum::{extract::State, response::IntoResponse, Form};
 
-use crate::utils::misc::password_md5_hasher;
+use crate::{models::{appstate::AppState, user::User}, utils::misc::password_md5_hasher};
+
 
 // criar novo usuário e inserir no banco
 pub async fn create_user(
