@@ -45,12 +45,11 @@ impl User {
     pub async fn save_user_in_db(new_user: &Self, state: Arc<AppState>){
         // Inserir no banco com a query corrigida
         query(
-            "INSERT INTO Users (User_Name, User_Email, User_Password, User_Role) VALUES (?, ?, ?, ?)"
+            "INSERT INTO Users (User_Name, User_Email, User_Password) VALUES (?, ?, ?)"
         )
         .bind(&new_user.user_name)
         .bind(&new_user.user_email)
         .bind(&new_user.user_password)
-        .bind(format!("{:?}", new_user.user_role)) // Converte enum para string
         .execute(&state.pool)
         .await
         .expect("Erro ao inserir usuário");
