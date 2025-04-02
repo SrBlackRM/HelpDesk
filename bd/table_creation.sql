@@ -34,6 +34,7 @@ CREATE TABLE Tickets (
     Ticket_Status ENUM('Aberto', 'Em andamento', 'Fechado') NOT NULL DEFAULT 'Aberto',
     Ticket_Priority ENUM('Baixa', 'Média', 'Alta') NOT NULL DEFAULT 'Média',
     Ticket_Description TEXT NOT NULL,
+    Ticket_Title VARCHAR(250) NOT NULL,
     ID_User_Technical INT, -- FK
     ID_User_Requesting INT NOT NULL, -- FK
     ID_Category INT NOT NULL,
@@ -71,3 +72,5 @@ CREATE TABLE Interactions (
 #ALTER TABLE Tickets ADD ID_Category INT NOT NULL;
 #SET FOREIGN_KEY_CHECKS = 1;
 #ALTER TABLE Tickets ADD CONSTRAINT FK_Category FOREIGN KEY (ID_Category) REFERENCES Categories(ID_Category) ON DELETE CASCADE;
+#ALTER TABLE Tickets ADD Ticket_Title VARCHAR(250) NOT NULL;
+#ALTER TABLE Tickets DROP COLUMN  Ticket_Title;

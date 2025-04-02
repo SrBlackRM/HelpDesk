@@ -14,13 +14,17 @@ pub struct Ticket{
     pub ticket_priority: Priority,
     pub ticket_description: String,
     pub ticket_technical: Option<i32>,
-    pub ticket_client_id: i32
+    pub ticket_title: String,
+    pub ticket_client_id: i32,
+    pub ticket_category: i32
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct NewTicket{
     pub ticket_description: String,
-    pub ticket_client_id: i32
+    pub ticket_client_id: i32,
+    pub ticket_title: String,
+    pub category_id: i32
 }
 
 
@@ -41,7 +45,7 @@ pub enum Priority{
 }
 
 impl Ticket {
-    pub fn new_ticket(description: String, client_id: i32) -> Self{
+    pub fn new_ticket(title: String, description: String, client_id: i32, category: i32) -> Self{
         Self { 
             ticket_opening_data: Local::now().into(), 
             ticket_closing_data: None, 
@@ -49,7 +53,9 @@ impl Ticket {
             ticket_priority: Priority::Média, 
             ticket_description: description, 
             ticket_technical: None, 
-            ticket_client_id: client_id, 
+            ticket_client_id: client_id,
+            ticket_title: title,
+            ticket_category: category
         }
     }
 
@@ -57,12 +63,16 @@ impl Ticket {
         // Inserir no banco com a query corrigida 
         query(
             "INSERT INTO Tickets (
+                Ticket_Title,
                 Ticket_Description, 
-                ID_User_Requesting
-                ) VALUES (?, ?)"
+                ID_User_Requesting,
+                ID_Category
+                ) VALUES (?, ?, ?, ?)"
         )
+        .bind(&new_ticket_post.ticket_title)
         .bind(&new_ticket_post.ticket_description)
         .bind(&new_ticket_post.ticket_client_id)
+        .bind(&new_ticket_post.ticket_category)
         .execute(&state.pool)
         .await?;
 

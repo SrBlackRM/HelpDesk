@@ -14,8 +14,10 @@ pub async fn create_ticket(
     // let client_id = models::user::User::get_id_by_email(payload.ticket_client.user_email.clone()).await.unwrap_or(0);
 
     let new_ticket_post = Ticket::new_ticket(
+        payload.ticket_title.clone(),
         payload.ticket_description.clone(),
-        payload.ticket_client_id
+        payload.ticket_client_id,
+        payload.category_id
     );
 
     println!("{:#?}", &new_ticket_post);
