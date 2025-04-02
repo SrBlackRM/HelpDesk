@@ -9,7 +9,7 @@ chrono = { version = "0.4.40", features = ["serde", "clock"] }
 dotenv = "0.15.0"
 md5 = "0.7.0"
 serde = "1.0.219"
-sqlx = {version = "0.8.3", features = ["mysql", "runtime-tokio-native-tls", "macros"]}
+sqlx = {version = "0.8.3", features = ["mysql", "runtime-tokio-native-tls", "macros", "chrono"]}
 tera = "1.20.0"
 tokio = { version = "1.44.1", features = ["full", "rt-multi-thread"] }
 tower-http = "0.6.2"

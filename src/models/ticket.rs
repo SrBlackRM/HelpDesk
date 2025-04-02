@@ -2,12 +2,13 @@ use std::sync::Arc;
 
 use chrono::{DateTime, Local, Utc};
 use serde::{Deserialize, Serialize};
-use sqlx::{prelude::Type, query};
+use sqlx::{prelude::Type, query, Row};
 
 use super::appstate::AppState;
 
 #[derive(Debug,Deserialize, Serialize)]
 pub struct Ticket{
+    pub ticket_id: Option<i32>,
     pub ticket_opening_data: DateTime<Utc>,
     pub ticket_closing_data: Option<DateTime<Utc>>,
     pub ticket_status: StatusTicket,
@@ -47,6 +48,7 @@ pub enum Priority{
 impl Ticket {
     pub fn new_ticket(title: String, description: String, client_id: i32, category: i32) -> Self{
         Self { 
+            ticket_id: None,
             ticket_opening_data: Local::now().into(), 
             ticket_closing_data: None, 
             ticket_status: StatusTicket::Aberto, 
@@ -78,4 +80,40 @@ impl Ticket {
 
         Ok(())
     }
+
+    pub async fn get_all_tickets(state: Arc<AppState>) -> Result<Vec<Ticket>, sqlx::Error> {
+        let rows = query(
+            "SELECT 
+                ID_Ticket,
+                Ticket_Title,
+                Ticket_Status,
+                Ticket_Priority,
+                ID_Category,
+                Ticket_Description,
+                ID_User_Technical,
+                ID_User_Requesting,
+                Ticket_Opening_Data,
+                Ticket_Closing_Data            
+            FROM Tickets"
+        )
+        .fetch_all(&state.pool)
+        .await?; // Propaga erro automaticamente
+    
+        let tickets: Vec<Ticket> = rows.into_iter().map(|row| Ticket {
+            ticket_id: row.try_get("ID_Ticket").unwrap_or(Some(0)),
+            ticket_title: row.try_get("Ticket_Title").unwrap_or_else(|_| "".to_string()),
+            ticket_status: row.try_get("Ticket_Status").unwrap_or_else(|_| StatusTicket::Aberto),
+            ticket_priority: row.try_get("Ticket_Priority").unwrap_or_else(|_| Priority::Média),
+            ticket_category: row.try_get("ID_Category").unwrap_or(0),
+            ticket_description: row.try_get("Ticket_Description").unwrap_or_else(|_| "".to_string()),
+            ticket_client_id: row.try_get("ID_User_Requesting").unwrap_or(0),
+            ticket_technical: row.try_get("ID_User_Technical").ok(),
+            ticket_closing_data: row.try_get("Ticket_Closing_Data").ok(), 
+            ticket_opening_data: row.try_get("Ticket_Opening_Data").unwrap_or(Utc::now()),
+        }).collect();
+    
+        Ok(tickets)
+    }
+
+    
 }

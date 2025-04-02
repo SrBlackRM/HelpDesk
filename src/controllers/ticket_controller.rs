@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use axum::{extract::State, http::StatusCode, response::{Html, IntoResponse}, Json};
 
-use crate::models::{appstate::AppState, ticket::{NewTicket, Ticket}};
+use crate::models::{self, appstate::AppState, ticket::{NewTicket, Ticket}};
 
 #[axum::debug_handler]
 pub async fn create_ticket(
@@ -32,7 +32,12 @@ pub async fn list_tickets(
 ) -> impl IntoResponse {
     println!("GET /tickets");
 
-    let rendered = state.tera.render("tickets.html", &tera::Context::new())
+    let context = &mut tera::Context::new();
+    let tickets: Vec<Ticket> = models::ticket::Ticket::get_all_tickets(state.clone()).await.expect("Erro");
+    
+    context.insert("tickets", &tickets);
+
+    let rendered = state.tera.render("tickets.html", &context)
         .expect("Erro ao carregar tickets.html");
     Html(rendered)
 }

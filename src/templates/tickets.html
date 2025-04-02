@@ -32,8 +32,8 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Descrição</th>
+                <th>Chamado Nº</th>
+                <th>Titulo</th>
                 <th>Status</th>
                 <th>Prioridade</th>
                 <th>Cliente</th>
@@ -41,22 +41,16 @@
             </tr>
         </thead>
         <tbody>
+            {% for ticket in tickets %}
             <tr>
-                <td>1</td>
-                <td>Erro no sistema</td>
-                <td>Aberto</td>
-                <td>Média</td>
-                <td>João Silva</td>
-                <td>01/04/2025</td>
+                <td>{{ ticket.ticket_id }}</td>
+                <td>{{ ticket.ticket_title }}</td>
+                <td>{{ ticket.ticket_status }}</td>
+                <td>{{ ticket.ticket_priority }}</td>
+                <td>{{ ticket.ticket_client_id }}</td>
+                <td>{{ ticket.ticket_opening_data }}</td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Problema com login</td>
-                <td>Em andamento</td>
-                <td>Alta</td>
-                <td>Maria Oliveira</td>
-                <td>31/03/2025</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </body>
