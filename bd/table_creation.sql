@@ -36,6 +36,7 @@ CREATE TABLE Tickets (
     Ticket_Description TEXT NOT NULL,
     ID_User_Technical INT, -- FK
     ID_User_Requesting INT NOT NULL, -- FK
+    ID_Category INT NOT NULL,
     
     PRIMARY KEY (ID_Ticket),
     
@@ -43,7 +44,10 @@ CREATE TABLE Tickets (
     REFERENCES Users(ID_User) ON DELETE CASCADE,
     
     CONSTRAINT FK_UserRequesting FOREIGN KEY (ID_User_Requesting)
-    REFERENCES Users(ID_User) ON DELETE CASCADE
+    REFERENCES Users(ID_User) ON DELETE CASCADE,
+    
+    CONSTRAINT FK_Category FOREIGN KEY (ID_Category)
+    REFERENCES Categories(ID_Category) ON DELETE CASCADE
 );
 
 CREATE TABLE Interactions (
@@ -64,4 +68,6 @@ CREATE TABLE Interactions (
     REFERENCES Users(ID_User) ON DELETE CASCADE
 );
 
-#ALTER TABLE Users ADD User_Active BOOL NOT NULL DEFAULT FALSE;
+#ALTER TABLE Tickets ADD ID_Category INT NOT NULL;
+#SET FOREIGN_KEY_CHECKS = 1;
+#ALTER TABLE Tickets ADD CONSTRAINT FK_Category FOREIGN KEY (ID_Category) REFERENCES Categories(ID_Category) ON DELETE CASCADE;

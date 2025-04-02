@@ -48,6 +48,8 @@ async fn main() {
 
     // abrir chamado
     .nest("/new_ticket", routes::ticket::TicketRoute::create_new_ticket_route(state.clone()))
+
+    .nest("/tickets", routes::ticket::TicketRoute::list_tickets_route(state.clone()))
     
     .with_state(state)
     ;

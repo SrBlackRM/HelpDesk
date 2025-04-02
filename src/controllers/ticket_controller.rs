@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::{extract::State, http::StatusCode, response::IntoResponse, Json};
+use axum::{extract::State, http::StatusCode, response::{Html, IntoResponse}, Json};
 
 use crate::models::{appstate::AppState, ticket::{NewTicket, Ticket}};
 
@@ -23,4 +23,14 @@ pub async fn create_ticket(
         Ok(_) => (StatusCode::CREATED, Json(new_ticket_post)).into_response(),
         Err(_) => (StatusCode::INTERNAL_SERVER_ERROR, "Erro ao salvar ticket").into_response(),
     }
+}
+
+pub async fn list_tickets(
+    State(state): State<Arc<AppState>>
+) -> impl IntoResponse {
+    println!("GET /tickets");
+
+    let rendered = state.tera.render("tickets.html", &tera::Context::new())
+        .expect("Erro ao carregar tickets.html");
+    Html(rendered)
 }
