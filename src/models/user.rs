@@ -4,7 +4,7 @@ use sqlx::query;
 use crate::models::appstate::AppState;
 use std::sync::Arc;
 
-#[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct User {
     pub user_name: String,
     pub user_email: String,
