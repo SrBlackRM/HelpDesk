@@ -23,6 +23,7 @@ mod controllers;
 mod routes;
 mod models;
 mod db;
+mod utils;
 
 // tokio para tornar a função main asyncrona
 #[tokio::main]

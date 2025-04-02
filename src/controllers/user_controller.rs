@@ -9,6 +9,8 @@ use crate::models::{
     appstate::AppState, 
     user::User};
 
+use crate::utils::misc::password_md5_hasher;
+
 // criar novo usuário e inserir no banco
 pub async fn create_user(
     State(state): State<Arc<AppState>>,
@@ -19,7 +21,7 @@ pub async fn create_user(
     let new_user = User::build_user(
         payload.user_name,
         payload.user_email,
-        payload.user_password,
+        password_md5_hasher(payload.user_password.as_str()),
     );
 
     // utiliza a implementação save user para salvar no banco
