@@ -41,3 +41,18 @@ pub async fn list_tickets(
         .expect("Erro ao carregar tickets.html");
     Html(rendered)
 }
+
+pub async fn new_ticket(
+    State(state): State<Arc<AppState>>
+) -> impl IntoResponse {
+    println!("GET /new_ticket");
+
+    let context = &mut tera::Context::new();
+    let template_name: String = String::from("new_ticket.html");
+
+    context.insert("static_path", "/static");
+
+    let rendered: String = state.tera.render(&template_name, &context)
+        .expect("Erro ao carregar página");
+    Html(rendered)
+}

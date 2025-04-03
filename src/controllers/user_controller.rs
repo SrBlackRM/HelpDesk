@@ -1,14 +1,21 @@
 use std::sync::Arc;
 
 use axum::{extract::State, response::IntoResponse, Form};
+use serde::{Deserialize, Serialize};
 
 use crate::{models::{appstate::AppState, user::User}, utils::misc::password_md5_hasher};
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NewUser{
+    user_name: String,
+    user_email: String,
+    user_password: String
+}
 
 // criar novo usuário e inserir no banco
 pub async fn create_user(
     State(state): State<Arc<AppState>>,
-    Form(ref payload): Form<User>
+    Form(ref payload): Form<NewUser>
 ) -> impl IntoResponse {
     println!("POST /register.html");
     // utiliza a implementação build_user para criar novo usuário

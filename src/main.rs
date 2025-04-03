@@ -17,6 +17,7 @@ use sqlx::mysql::MySqlPool;
 
 // AppState Struct propria
 use models::appstate::AppState;
+use tower_http::services::ServeDir;
 
 // modulos proprios imports
 mod controllers;
@@ -41,6 +42,11 @@ async fn main() {
 
     // cria rota raiz do servidor
     let app = Router::new()
+
+    // adiciona o serviço ao app para servir arquivos como js
+    .nest_service("/static", ServeDir::new("src/static"))
+
+    // pagina inicial
     .route("/", get(render_index))
 
     // cria rota para registro de novo usuário / cliente
@@ -49,7 +55,11 @@ async fn main() {
     // abrir chamado
     .nest("/new_ticket", routes::ticket::TicketRoute::create_new_ticket_route(state.clone()))
 
+    // listar todos os chamados
     .nest("/tickets", routes::ticket::TicketRoute::list_tickets_route(state.clone()))
+
+    // abrir especificações do chamado
+    // .nest("/tickets/[ticket_id]/detail", routes::ticket::TicketRoute::list_tickets_route(state.clone()))
     
     .with_state(state)
     ;
