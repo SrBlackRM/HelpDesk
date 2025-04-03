@@ -24,7 +24,7 @@ mod controllers;
 mod routes;
 mod models;
 mod db;
-mod utils;
+mod services;
 
 // tokio para tornar a função main asyncrona
 #[tokio::main]
@@ -52,6 +52,9 @@ async fn main() {
     // cria rota para registro de novo usuário / cliente
     .nest("/register", routes::register::RegisterRoute::create_register_route(state.clone()))
 
+    // cria rota para login 
+    .nest("/login", routes::auth::AuthRoute::get_authenticated(state.clone()))
+
     // abrir chamado
     .nest("/new_ticket", routes::ticket::TicketRoute::create_new_ticket_route(state.clone()))
 
@@ -65,7 +68,7 @@ async fn main() {
     ;
     
     // roda o app escutando na porta 8080
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
+    let listener = tokio::net::TcpListener::bind("localhost:8080")
         .await
         .unwrap();
     println!("Servidor rodando em {}", listener.local_addr().unwrap());

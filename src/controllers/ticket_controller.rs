@@ -11,8 +11,6 @@ pub async fn create_ticket(
 ) -> impl IntoResponse {
     println!("POST /new_ticket");
 
-    // let client_id = models::user::User::get_id_by_email(payload.ticket_client.user_email.clone()).await.unwrap_or(0);
-
     let new_ticket_post = Ticket::new_ticket(
         payload.ticket_title.clone(),
         payload.ticket_description.clone(),
@@ -48,7 +46,7 @@ pub async fn new_ticket(
     println!("GET /new_ticket");
 
     let context = &mut tera::Context::new();
-    let template_name: String = String::from("new_ticket.html");
+    let template_name: &str = "new_ticket.html";
 
     context.insert("static_path", "/static");
 

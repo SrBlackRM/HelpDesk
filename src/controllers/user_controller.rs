@@ -3,7 +3,7 @@ use std::sync::Arc;
 use axum::{extract::State, response::IntoResponse, Form};
 use serde::{Deserialize, Serialize};
 
-use crate::{models::{appstate::AppState, user::User}, utils::misc::password_md5_hasher};
+use crate::{models::{appstate::AppState, user::User}, services::auth_service::password_hash};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct NewUser{
@@ -22,7 +22,7 @@ pub async fn create_user(
     let new_user = User::build_user(
         payload.user_name.clone(),
         payload.user_email.clone(),
-        password_md5_hasher(payload.user_password.clone().as_str()),
+        password_hash(payload.user_password.clone().as_str()),
     );
 
     // utiliza a implementação save user para salvar no banco
