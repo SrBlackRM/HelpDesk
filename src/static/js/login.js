@@ -24,14 +24,19 @@ async function sendData(login_obj){
             headers: send_header,
             body: JSON.stringify(login_obj),
         })
-        if (response.ok) {
-            window.location.href("/new_ticket")
-        } else {
-            alert("Erro ao fazer login");
-        }
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                localStorage.setItem("token", data.token); // Armazena o token no navegador
+                window.location.href = "/new_ticket";  // Redireciona para a página restrita
+            } else {
+                alert("Login falhou!");
+            }
+        })
+        .catch(error => console.error("Erro ao logar:", error));
     }
     catch{
-        console.log("Erro na requisição: ", error);
+        console.log("Erro na requisição");
         alert("Erro ao se conectar com o servidor! ");
     }
 

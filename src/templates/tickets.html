@@ -25,6 +25,22 @@
             background-color: #007bff;
             color: white;
         }
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            background-color: #007BFF;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -53,5 +69,8 @@
             {% endfor %}
         </tbody>
     </table>
+    <div class="button-container">
+        <a href="/new_ticket" class="button">Criar Novo Chamado</a>
+    </div>
 </body>
 </html>

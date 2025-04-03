@@ -40,6 +40,9 @@ pub async fn login(
                 println!("Usuário logado com sucesso\nToken: {:?}", token);
                 return Ok(Json(TokenResponse { token }));
             }
+            else{
+                println!("Credenciais inválidas");
+            }
         }
 
         Err((
