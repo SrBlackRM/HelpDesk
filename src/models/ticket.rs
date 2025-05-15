@@ -136,7 +136,7 @@ impl Ticket {
         Ok(())
     }
 
-    // Função para mudar a prioridade de um ticket
+    // Usado para mudar a prioridade de um ticket
     pub async fn update_ticket_priority(ticket_id: i32, new_priority: Priority, state: Arc<AppState>) -> Result<(), sqlx::Error> {
         query(
             "UPDATE Tickets SET Ticket_Priority = ? WHERE ID_Ticket = ?"
@@ -149,7 +149,7 @@ impl Ticket {
         Ok(())
     }
 
-    // Função para editar o título e descrição do ticket
+    // usado para mudar descrição e titulo de um ticket 
     pub async fn update_ticket_fields(ticket_id: i32, title: String, description: String, state: Arc<AppState>) -> Result<(), sqlx::Error> {
         query(
             "UPDATE Tickets SET Ticket_Title = ?, Ticket_Description = ? WHERE ID_Ticket = ?"
@@ -165,7 +165,7 @@ impl Ticket {
 }
 
 impl Ticket {
-    // Função para buscar um ticket pelo ID
+    //Buscar ticket por id
     pub async fn get_ticket_by_id(ticket_id: i32, state: Arc<AppState>) -> Result<Ticket, sqlx::Error> {
         let row = query(
             "SELECT 
