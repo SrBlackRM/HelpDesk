@@ -88,7 +88,7 @@ impl Ticket {
                 Ticket_Priority,
                 ID_Category,
                 Ticket_Description,
-                ID_User_Technical,
+                ID_User_
                 ID_User_Requesting,
                 Ticket_Opening_Data,
                 Ticket_Closing_Data            
